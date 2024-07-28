@@ -2,7 +2,7 @@
     import OpenAI from "openai";
 
     export let data = undefined;
-    export let prompt = "Describe this data";
+    export let prompt = "Briefly describe this data";
     export let response = "Click for summary";
 
     let apiKey = "";
@@ -27,7 +27,7 @@
                 messages: [
                     {
                         role: "system",
-                        content: `You are an analyst providing brief insights on the following data: ${data}. Render response as HTML tags (p ul li b i), every single tag with the class "markdown". Do not wrap the response in markdown fences. Max 3 bullets.`,
+                        content: `You are an analyst providing brief insights on the following data: ${data}. Render response as HTML tags (p ul li b i), every single tag with the class "markdown". Do not wrap the response in markdown fences. Max 3 bullets but less if possible.`,
                     },
                     { role: "user", content: prompt },
                 ],
@@ -44,6 +44,19 @@
 
 <main>
     <p class="markdown">{@html response}</p>
+    {#if response !== "Click for summary" && response !== "Thinking..."}
+        <p>Ask a different question</p>
+        <input
+            type="text"
+            bind:value={prompt}
+            class="w-full border border-gray-300 rounded-lg p-1 my-2"
+            on:keydown={(e) => {
+                if (e.key === "Enter") {
+                    fetchResponse();
+                }
+            }}
+        />
+    {/if}
     <button
         on:click={fetchResponse}
         class="w-30 text-white font-bold py-1 px-3 rounded-lg {response ===
@@ -59,4 +72,16 @@
             Regenerate
         {/if}
     </button>
+    {#if response !== "Click for summary" && response !== "Thinking..."}
+        <button
+            on:click={() => {
+                response = "Click for summary";
+                prompt = "Describe this data";
+            }}
+            class="w-30 text-white font-bold py-1 px-3 rounded-lg bg-red-500 hover:bg-red-700 transition"
+        >
+            Reset
+        </button>
+    {/if}
+    
 </main>
