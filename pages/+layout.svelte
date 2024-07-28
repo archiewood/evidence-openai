@@ -5,6 +5,6 @@
 	export let data;
 </script>
 
-<EvidenceDefaultLayout {data} hideSidebar hideBreadcrumbs hideHeader>
+<EvidenceDefaultLayout {data} hideSidebar hideBreadcrumbs githubRepo="https://github.com/archiewood/evidence-openai/">
 	<slot slot="content" />
 </EvidenceDefaultLayout>
