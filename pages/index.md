@@ -11,7 +11,6 @@ from orders
 group by all
 ```
 
-
-<BarChart data={orders_by_month} series=category/>
+<DataTable data={orders_by_month} compact/>
 
 <OpenAI data={orders_by_month}/>
